@@ -2,8 +2,8 @@ package casting;
 
 public class Escuela {
 
-	private String nombre;
-	private String nivel;
+	protected String nombre;
+	protected String nivel;
 	
 	
 	public Escuela(String nombre, String nivel) {
@@ -26,5 +26,9 @@ public class Escuela {
 	public String toString() {
 		return "Nombre: " + nombre + "\n" + "Nivel: "+nivel;
 	}
-	
+	@Override
+	public boolean equals(Object obj) {
+		
+		return super.equals(obj);
+	}
 }

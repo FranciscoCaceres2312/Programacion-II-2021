@@ -11,10 +11,10 @@ public class Grado extends Escuela{
 		this.cantAlum = cantidad;
 	}
 	
-	public void setNombre(String nombre) {
-		this.nom = nombre;
+	public void setNom(String nom) {
+		this.nom = nom;
 	}
-	public String getNombre() {
+	public String getNom() {
 		return nom;
 	}
 	public void setCantidad(int cantidad) {
@@ -24,6 +24,11 @@ public class Grado extends Escuela{
 		return cantAlum;
 	}
 	public String toString(){
-		return "Nombre: "+nom+ "\n" + "Cantidad de alumnos: " +cantAlum ;
+		return "Nombre de escuela: "+nombre+"\n"+" Nivel: "+nivel+"\n"+" Nombre de grado: "+nom+ "\n" + " Cantidad de alumnos: " +cantAlum ;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		// TODO Auto-generated method stub
+		return super.equals(obj);
 	}
 }
