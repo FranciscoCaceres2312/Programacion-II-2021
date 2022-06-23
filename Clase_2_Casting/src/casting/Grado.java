@@ -28,7 +28,7 @@ public class Grado extends Escuela{
 	}
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return super.equals(obj);
+		Grado ComparacionGrado = (Grado) obj;
+		return this.getNom().equals(ComparacionGrado.getNom());
 	}
 }

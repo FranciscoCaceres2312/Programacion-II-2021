@@ -28,7 +28,7 @@ public class Escuela {
 	}
 	@Override
 	public boolean equals(Object obj) {
-		
-		return super.equals(obj);
+		Escuela comparacionEscuela = (Escuela) obj;
+		return this.getNom(). equals (comparacionEscuela.getNom());
 	}
 }
