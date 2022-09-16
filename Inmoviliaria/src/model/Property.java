@@ -1,27 +1,28 @@
 package model;
+import java.io.Serializable;
 
-public class Property {
-	public int code;
+public class Property implements Serializable{
+
+	public String cadastralNumber;
 	public String direction;
 	public int postcard;
-	public float value;
+	public float price;
 	
-	public Property(int code, String direction, int postcard, float value) {
-		super();
-		this.code = code;
+	public Property(String cadastralNumber, String direction, int postcard, float price) {
+		this.cadastralNumber = cadastralNumber;
 		this.direction = direction;
 		this.postcard = postcard;
-		this.value = value;
+		this.price = price;
 	}
 	
-	public int getCode() {
-		return code;
+	public String getCadastralNumber() {
+		return cadastralNumber;
 	}
-
-	public void setCode(int code) {
-		this.code = code;
+	
+	public void setCadastralNumber(String cadastralNumber) {
+		this.cadastralNumber = cadastralNumber;
 	}
-
+	
 	public String getDirection() {
 		return direction;
 	}
@@ -38,22 +39,38 @@ public class Property {
 		this.postcard = postcard;
 	}
 
-	public float getValue() {
-		return value;
+	public float getprice() {
+		return price;
 	}
 
-	public void setValue(float value) {
-		this.value = value;
+	public void setValue(float price) {
+		this.price = price;
 	}
 
-	public void creat() {
-		
-	}
-	public void modify() {
-		
-	}
-	public void remove() {
-		
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Property other = (Property) obj;
+		if (cadastralNumber == null) {
+			if (other.cadastralNumber != null)
+				return false;
+		} else if (!cadastralNumber.equals(other.cadastralNumber))
+			return false;
+		return true;
 	}
 
+	@Override
+	public String toString() {
+		return "\n Numero Catastral: "+ cadastralNumber+""
+				+ "\n Dirección: "+direction+""
+				+ "\n Codigo Postal: "+postcard+""
+				+ "\n Valor: "+price;
+	}
+
+	
 }
