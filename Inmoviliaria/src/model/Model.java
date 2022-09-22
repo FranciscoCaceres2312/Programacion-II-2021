@@ -6,8 +6,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Model {
 	
@@ -21,19 +24,6 @@ public class Model {
 			}
 	    }
 		return state;
-	}
-	
-	public static ArrayList<Property> modifyProperty(Property prop,String numberCadastralReturn) {
-		ArrayList<Property> properti4 = new ArrayList<Property>();
-		for(int i=0;i<Model.showsListProperty().size();i++) {
-			
-			if(Model.showsListProperty().get(i).getCadastralNumber().equals(numberCadastralReturn)) {
-				properti4.addAll(showsListProperty());
-				properti4.remove(i);
-				properti4.add(prop);	
-			}
-		}
-		return properti4;
 	}
 	
 	public static void creatListProperty(Property prop) {
@@ -71,7 +61,6 @@ public class Model {
 				ObjectInputStream inputStream = new ObjectInputStream(file1);) {
 				
 				properties1 = (ArrayList<Property>) inputStream.readObject();
-				//properties1.forEach(System.out::println);
 		}catch(FileNotFoundException e) {
 			
 			System.out.println(" El archivo de almacenamiento no existe en el disco. ");
@@ -87,7 +76,7 @@ public class Model {
 		return properties1;
 	}
 	
-	public static ArrayList<Property> deleteProperty(String numberCadastralReturned) {
+	public static void deleteProperty(String numberCadastralReturned) {
 		ArrayList<Property> properti2 = new ArrayList<Property>();
 		for(int i=0;i<showsListProperty().size();i++) {
 			if(showsListProperty().get(i).getCadastralNumber().equals(numberCadastralReturned)) {
@@ -98,7 +87,20 @@ public class Model {
 	
 			}
 		}
-		return properti2;
+		Model.saveChange(properti2);
+	}
+	
+	public static void modifyProperty(Property prop,String numberCadastralReturn) {
+		ArrayList<Property> properti4 = new ArrayList<Property>();
+		for(int i=0;i<Model.showsListProperty().size();i++) {
+			
+			if(Model.showsListProperty().get(i).getCadastralNumber().equals(numberCadastralReturn)) {
+				properti4.addAll(showsListProperty());
+				properti4.remove(i);
+				properti4.add(prop);	
+			}
+		}
+		Model.saveChange(properti4);
 	}
 	
 	public static void saveChange(ArrayList<Property> change) {
@@ -122,5 +124,6 @@ public class Model {
 			System.out.println(" ¡La modificacion se realizo correctamente! ");
 			
 	}
+
 
 }

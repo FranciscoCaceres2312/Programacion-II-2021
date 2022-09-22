@@ -3,16 +3,22 @@ package views;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import model.Property;
+
 public class MenuProperty {
-	
+	/* El metodo keyboard crea un objeto Scanner que será utilizado en esta clase.
+	 * */
 	public static String keyboard() {
 		
 		Scanner scaner = new Scanner (System.in);
 		String var = scaner.nextLine();
 		return var;
-		
 	}
 	
+	/* El metodo menuManeProperty es el primer menu que se muestra al ususario despues de
+	 * haber seleccionado que desea gestionar un inmueble. 
+	 * Retorna la opción que elige el usuario de tipo int.
+	 * */
 	public static int menuManeProperty() {
 		int option = 0;
 		
@@ -31,7 +37,9 @@ public class MenuProperty {
 		return option;
 	
 	}
-	
+	/* El metodo addProperty pide al usuario que ingrese los datos necesarios para añadir un inmueble al sistema. 
+	 * Retorna los valores ingresados en un arreglo de tipo String.
+	 * */
 	public static String[] addProperty() {
 	    	
 		    System.out.println(" Añada el codigo catastral del inmueble: ");
@@ -43,6 +51,7 @@ public class MenuProperty {
 			System.out.println(" Añada precio del inmueble: ");
 			String price = keyboard();
 			String[] dataProperty = new String[4];
+		
 			dataProperty[0] = numberCadastral;
 			dataProperty[1] = direction;
 			dataProperty[2] = postcard;
@@ -50,16 +59,35 @@ public class MenuProperty {
 			
 	    return dataProperty;
 	}
-	
-	public static String selectDeleteProperty() {
-		
-		String numberCadastral = "";
-		System.out.println("\n     -------------------------------------------------------    ");
-		System.out.println("\n Ingrese el codigo catastral del inmueble que desa eliminar: ");
-		numberCadastral = keyboard();
-		return numberCadastral;
+	public static String[] newProperty(String[] oldProperty) {
+
+			System.out.println(" Añada la direccion del inmueble: ");
+			String direction = keyboard();
+			System.out.println(" Añada precio del inmueble: ");
+			String price = keyboard();
+			String[] dataProperty = new String[5];
+		    dataProperty[0] = oldProperty[0];
+			dataProperty[1] = oldProperty[1];
+			dataProperty[2] = direction;
+			dataProperty[3] = oldProperty[3];
+			dataProperty[4] = price;
+			
+	    return dataProperty;
 	}
-	
+	/* El metodo selectDeleteProperty solicita al usuario que ingrese el codigo del inmueble que se desea eliminar.
+	 * Retorna un String con el codigo ingresado por el usuario.
+	 * */
+	public static int selectDeleteProperty() {
+		
+		int idDel= 0;
+		System.out.println("\n     -------------------------------------------------------    ");
+		System.out.println("\n Ingrese el ID del inmueble que desa eliminar: ");
+		idDel = Integer.parseInt(keyboard());
+		return idDel;
+	}
+	/* El metodo confirmDelte le pide al usuario que confirme la eliminacion de un inmueble.
+	 * Retorna un valor Boolean con la confirmaciónn del inmueble. 
+	 * */
 	public static boolean confirmDelete(String numberCadastralReturned) {
 		
 		boolean value = false;
@@ -82,14 +110,16 @@ public class MenuProperty {
 		return value;
 		
 	}
-	
-	public static String selectmodifyProperty() {
+	/* El metodo selectmodifyProperty solicita al usuario que ingrese el codigo del inmueble que se desea modificar.
+	 * Retorna un String con el codigo ingresado por el usuario.
+	 * */
+	public static int selectmodifyProperty() {
 		
-		String numberCadastral1 = "";
+		int idMody = 0;
 		System.out.println("\n     -------------------------------------------------------    ");
-		System.out.println("\n Ingrese el codigo catastral del inmueble que desa modificar: ");
-        numberCadastral1 = keyboard(); 
-		return numberCadastral1;
+		System.out.println("\n Ingrese el ID del inmueble que desa modificar: ");
+        idMody = Integer.parseInt(keyboard()); 
+		return idMody;
 		
 	}
 	

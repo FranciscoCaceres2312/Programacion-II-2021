@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 
 import model.Model;
+import model.Occupant;
 import model.Property;
 import views.MenuOccupant;
 import views.MenuProperty;
@@ -24,53 +25,59 @@ public class Controller {
 				switch(valueMenuManeProperty) {
 				
 				case 1:
-					
+					 
 					String[] data = new String[4];
 				    data = MenuProperty.addProperty();
-				    Property property = new Property(data[0],data[1],Integer.parseInt(data[2]),Float.parseFloat(data[3]));
-				    Model.creatListProperty(property);
-				    
+					Property property = new Property(Property.idIncrement(),data[0],data[1],Integer.parseInt(data[2]), Float.parseFloat(data[3]));
+				    //Model.creatListProperty(property);
+				    property.addProperty();
 				    break;
 				case 2:
 					
-					String numberCadastralReturned = MenuProperty.selectDeleteProperty();
+					int idDel = MenuProperty.selectDeleteProperty();
+					Property.filterProperty(idDel);
+					
+					/*String numberCadastralReturned = MenuProperty.selectDeleteProperty();
 					boolean returnCD = Model.filterProperty(numberCadastralReturned);
 					if(returnCD == true) {
 						boolean returnDC = MenuProperty.confirmDelete(numberCadastralReturned);
 						if(returnDC == true) {
-							ArrayList<Property> properti3 = new ArrayList<>();
-							properti3 = Model.deleteProperty(numberCadastralReturned);
-							Model.saveChange(properti3);
+							Model.deleteProperty(numberCadastralReturned);
 						}
 					}else {
 						System.out.println(" No se ha encontrado este inmueble.");
-					}
+					}*/
 					break;
 				case 3:
 					
-					String cadastralNumberReturned = MenuProperty.selectmodifyProperty();
+					String[] newData = new String[5];
+					int idMody = MenuProperty.selectmodifyProperty();
+					newData = Property.filterProperty(idMody);
+					newData = MenuProperty.newProperty(newData);
+					Property propertyMody = new Property(Integer.parseInt(newData[0]),newData[1],newData[2],Integer.parseInt(newData[3]), Float.parseFloat(newData[4]));
+					propertyMody.modifyProperty();
+					/*String cadastralNumberReturned = MenuProperty.selectmodifyProperty();
 					boolean stateFilter = Model.filterProperty(cadastralNumberReturned);
 					if(stateFilter == true) {
-						ArrayList<Property> properti5 = new ArrayList<Property>();
-						String[] newData = new String[4];
+						String[] newData = new String[5];
 						newData = MenuProperty.addProperty();
-						Property properti = new Property(newData[0],newData[1],Integer.parseInt(newData[2]),Float.parseFloat(newData[3]));
-						properti5 = Model.modifyProperty(properti,cadastralNumberReturned);
-						Model.saveChange(properti5);
-					}
+						Property propertyMody = new Property(Integer.parseInt(newData[0]),newData[1],newData[2],Integer.parseInt(newData[3]), Float.parseFloat(newData[4]));
+						Model.modifyProperty(propertyMody,cadastralNumberReturned);
+					}*/
 					break;
 				case 4: 
 					
-					ArrayList<Property> showsList = new ArrayList<Property>();
+					Property.showsProperty();
+					/*ArrayList<Property> showsList = new ArrayList<Property>();
 					showsList.addAll(Model.showsListProperty());
-					//showsList.trimToSize();
-					showsList.forEach(System.out::println);
+					showsList.trimToSize();
+					showsList.forEach(System.out::println);*/
 				
 				}
 				
 			}else {
 				if(valueMenuMane == 2){
-				MenuOccupant.menuManeOccupant();
+					Occupant.idIncrement();
 			    }else {
 			    	if(valueMenuMane == 3) {
 			    		state = false;
