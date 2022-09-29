@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 public class Property implements Serializable{
@@ -22,6 +23,22 @@ public class Property implements Serializable{
 		this.price = price;
 	}
 	
+    public static int idIncrement() {
+		
+		int result = 0;
+		try {
+			Connection conn = Singlet.getInstance();
+			Statement statement = conn.createStatement();
+			ResultSet rs = statement.executeQuery("SELECT MAX(id_Occupant) from occupant");
+			while(rs.next()) {
+				result = rs.getInt(1) + 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+    
 	public int getId() {
 		return id;
 	}
@@ -80,7 +97,8 @@ public class Property implements Serializable{
 
 	@Override
 	public String toString() {
-		return "\n Numero Catastral: "+ cadastralNumber+""
+		return "\n ID: "+id+""
+				+ "\n Numero Catastral: "+ cadastralNumber+""
 				+ "\n Dirección: "+direction+""
 				+ "\n Codigo Postal: "+postcard+""
 				+ "\n Valor: "+price;
@@ -106,21 +124,23 @@ public class Property implements Serializable{
 		
 	}
     
-    public static void showsProperty() {
-    	
+    public static ArrayList<Property> getAllProperties() {
+    	ArrayList<Property> result = new ArrayList<Property>();
     	try {
 			Connection conn = Singlet.getInstance();
 			PreparedStatement pst = conn.prepareStatement("SELECT * FROM property");
             ResultSet rs = pst.executeQuery();
+            
 			while(rs.next()) {
-            	System.out.println(rs.getInt(1)+" "+rs.getString("cadastralNumber")+" "
-			+rs.getString("direction")+" "+rs.getInt("postcard")+" "+rs.getFloat("price")); 
-            }
+				
+				Property prop = new Property(rs.getInt("id_Property"), rs.getString("cadastralNumber"),rs.getString("direction"),rs.getInt("postcard"),rs.getFloat("price"));
+                result.add(prop);            
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
-    	
+    	return result; 
     }
     public static String[] filterProperty(int id) {
     	String filter[] = new String[5];
@@ -128,7 +148,6 @@ public class Property implements Serializable{
 			Connection conn = Singlet.getInstance();
 			PreparedStatement pst = conn.prepareStatement("SELECT * FROM property WHERE id_Property=?");
             pst.setInt(1, id);
-            pst.executeUpdate();
 			ResultSet rs = pst.executeQuery();
 			while(rs.next()) {
 				filter[0] = Integer.toString(rs.getInt(1));
@@ -137,8 +156,7 @@ public class Property implements Serializable{
 				filter[3] = Integer.toString(rs.getInt("postcard"));
 				filter[4] = Float.toString(rs.getFloat("price"));
             }
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+    	}catch(SQLException e) {
 			e.printStackTrace();
 		}
     	return filter;
@@ -164,19 +182,18 @@ public class Property implements Serializable{
 			}
     }
     
-	public static int idIncrement() {
+	public static void deleteProperty(int id) {
 		
-		int id = 0;
 		try {
 			Connection conn = Singlet.getInstance();
-			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT MAX(id_Occupant) from occupant");
-			while(rs.next()) {
-				id = rs.getInt(1) + 1;
-			}
+			PreparedStatement st = conn.prepareStatement(" DELETE FROM property WHERE id_Property=?");
+			st.setInt(1, id);
+			st.executeUpdate();
+			
 		} catch (SQLException e) {
+			
 			e.printStackTrace();
 		}
-		return id;
+		
 	}
 }

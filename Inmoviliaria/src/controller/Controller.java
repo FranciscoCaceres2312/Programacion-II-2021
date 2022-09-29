@@ -29,24 +29,13 @@ public class Controller {
 					String[] data = new String[4];
 				    data = MenuProperty.addProperty();
 					Property property = new Property(Property.idIncrement(),data[0],data[1],Integer.parseInt(data[2]), Float.parseFloat(data[3]));
-				    //Model.creatListProperty(property);
 				    property.addProperty();
 				    break;
 				case 2:
 					
-					int idDel = MenuProperty.selectDeleteProperty();
-					Property.filterProperty(idDel);
+					int idDel = MenuProperty.selectDeleteProperty(Property.getAllProperties());
+					Property.deleteProperty(idDel);
 					
-					/*String numberCadastralReturned = MenuProperty.selectDeleteProperty();
-					boolean returnCD = Model.filterProperty(numberCadastralReturned);
-					if(returnCD == true) {
-						boolean returnDC = MenuProperty.confirmDelete(numberCadastralReturned);
-						if(returnDC == true) {
-							Model.deleteProperty(numberCadastralReturned);
-						}
-					}else {
-						System.out.println(" No se ha encontrado este inmueble.");
-					}*/
 					break;
 				case 3:
 					
@@ -56,22 +45,10 @@ public class Controller {
 					newData = MenuProperty.newProperty(newData);
 					Property propertyMody = new Property(Integer.parseInt(newData[0]),newData[1],newData[2],Integer.parseInt(newData[3]), Float.parseFloat(newData[4]));
 					propertyMody.modifyProperty();
-					/*String cadastralNumberReturned = MenuProperty.selectmodifyProperty();
-					boolean stateFilter = Model.filterProperty(cadastralNumberReturned);
-					if(stateFilter == true) {
-						String[] newData = new String[5];
-						newData = MenuProperty.addProperty();
-						Property propertyMody = new Property(Integer.parseInt(newData[0]),newData[1],newData[2],Integer.parseInt(newData[3]), Float.parseFloat(newData[4]));
-						Model.modifyProperty(propertyMody,cadastralNumberReturned);
-					}*/
 					break;
 				case 4: 
 					
-					Property.showsProperty();
-					/*ArrayList<Property> showsList = new ArrayList<Property>();
-					showsList.addAll(Model.showsListProperty());
-					showsList.trimToSize();
-					showsList.forEach(System.out::println);*/
+					MenuProperty.showsAllProperties(Property.getAllProperties()); 
 				
 				}
 				

@@ -31,7 +31,6 @@ public class Model {
 		ArrayList<Property> properties = new ArrayList<Property>();
 		properties.addAll(Model.showsListProperty());
 		properties.add(prop);
-		// Optimizacion de recursos tipo array
 		properties.trimToSize();
 		
 		try(FileOutputStream file = new FileOutputStream("Datas.txt");
