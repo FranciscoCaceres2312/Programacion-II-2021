@@ -94,7 +94,7 @@ public class Model {
 				properti2.addAll((ArrayList<Property>)showsListProperty());
 				properti2.remove(i);
 				System.out.println(" El inmueble fue eliminado. ");
-				properti2.forEach(System.out::println);
+				//properti2.forEach(System.out::println);
 	
 			}
 		}
@@ -122,5 +122,116 @@ public class Model {
 			System.out.println(" ¡La modificacion se realizo correctamente! ");
 			
 	}
+	//Metodos para la clase Occupant
+	
+	public static ArrayList<Occupant> getListOccupant(){
+		
+		ArrayList<Occupant> result = new ArrayList<Occupant>();
+		try(FileInputStream file1 = new FileInputStream("dataOccupant.txt");
+				ObjectInputStream inputStream = new ObjectInputStream(file1);) {
+				
+				result = (ArrayList<Occupant>) inputStream.readObject();
+			
+		}catch(FileNotFoundException e) {
+			
+			System.out.println(" El archivo de almacenamiento no existe en el disco. ");
+			
+		}catch(IOException e) {
+			
+			e.printStackTrace();
+			System.out.println(" Se encontro un error de entrada/salida. ");
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static void creatListOccupant(Occupant occu) {
+		
+		ArrayList<Occupant> result = new ArrayList<Occupant>();
+		//result.addAll(Model.getListOccupant());
+		result.add(occu);
+		result.trimToSize();
+		
+		try(FileOutputStream file = new FileOutputStream("dataOccupant.txt");
+		    ObjectOutputStream bridge = new ObjectOutputStream(file);){
+			
+		    bridge.writeObject(result);
+		    
+		    
+		}catch(FileNotFoundException e) {
+			
+			System.out.println(" El archivo de almacenamiento no existe en el disco. ");
+			
+		}catch(IOException e) {
+			
+			e.printStackTrace();
+			System.out.println(" Se encontro un error de entrada/salida. ");
+		}
+		
+		System.out.println(" ¡Los datos se han guardado correctamente! ");
+		
+	}
+	
+    public static boolean filterOccupant(int dni){
+		
+		boolean state = false;
+		for(int i=0;i< Model.getListOccupant().size();i++) {
+			if(Model.getListOccupant().get(i).getDNI() == dni) {
+				System.out.println(" El inquilino si existe en el sistema "+"\n");
+				state = true;
+			}
+	    }
+		if(state == false) {
+			System.out.println(" El Inquilino no existe en el sistema. ");
+		}
+		return state;
+	}
+    
+    public static ArrayList<Occupant> deleteOccupant(int dni) {
+		ArrayList<Occupant> result = new ArrayList<Occupant>();
+		for(int i=0;i<getListOccupant().size();i++) {
+			if(getListOccupant().get(i).getDNI() == dni) {
+				result.addAll((ArrayList<Occupant>)getListOccupant());
+				result.remove(i);
+				System.out.println(" El inquilino fue eliminado del sistema. ");
+	
+			}
+		}
+		return result;
+	}
+    
+    public static void saveChangeOccupant(ArrayList<Occupant> change) {
+		
+		try(FileOutputStream file = new FileOutputStream("dataOccupant.txt");
+			    ObjectOutputStream bridgechange = new ObjectOutputStream(file);){
+				
+			    bridgechange.writeObject(change);
+			    
+			    
+			}catch(FileNotFoundException e) {
+				
+				System.out.println(" El archivo de almacenamiento no existe en el disco. ");
+				
+			}catch(IOException e) {
+				
+				e.printStackTrace();
+				System.out.println(" Se encontro un error de entrada/salida. ");
+			}
+			
+			System.out.println(" ¡La modificacion se realizo correctamente! ");
+			
+	}
 
+    public static ArrayList<Occupant> searchOccupant(int dni) {
+    	
+    	ArrayList<Occupant> result = new ArrayList<Occupant>();
+    	for(int i=0;i< Model.getListOccupant().size();i++) {
+			if(Model.getListOccupant().get(i).getDNI() == dni) {
+				result.addAll(i, Model.getListOccupant());
+			}
+    	}
+    	return result;
+    }
 }

@@ -3,6 +3,7 @@ package controller;
 import java.util.ArrayList;
 
 import model.Model;
+import model.Occupant;
 import model.Property;
 import views.MenuOccupant;
 import views.MenuProperty;
@@ -63,15 +64,52 @@ public class Controller {
 					
 					ArrayList<Property> showsList = new ArrayList<Property>();
 					showsList.addAll(Model.showsListProperty());
-					//showsList.trimToSize();
 					showsList.forEach(System.out::println);
 				
 				}
 				
 			}else {
-				if(valueMenuMane == 2){
-				MenuOccupant.menuManeOccupant();
-			    }else {
+				if(valueMenuMane == 2){ 
+					int valueMenuOccupant = MenuOccupant.menuManeOccupant();
+					switch(valueMenuOccupant) {
+					case 1:
+						String[] data = new String[3];
+					    data = MenuOccupant.addOccupant();
+					    Occupant occupant = new Occupant(Occupant.idIncrement(),Integer.parseInt(data[0]),data[1],Integer.parseInt(data[2]));
+					    Model.creatListOccupant(occupant);
+						break;
+					case 2: 
+						int numberDniReturned = MenuOccupant.selectOccupantDelete(Model.getListOccupant());
+						boolean dniReturn = Model.filterOccupant(numberDniReturned);
+						if(dniReturn == true) {
+							boolean returnDni = MenuOccupant.confirmDelete(numberDniReturned);
+							if(returnDni == true) {
+								ArrayList<Occupant> ocupant = new ArrayList<Occupant>();
+								ocupant = Model.deleteOccupant(numberDniReturned);
+								Model.saveChangeOccupant(ocupant);
+							}
+						}
+						break;
+					case 3:
+						/*
+						 * int dnireturn = MenuOccupant.selectOccupantModify(Model.getListOccupant());
+						 * boolean stateFilter = Model.filterOccupant(dnireturn); if(stateFilter ==
+						 * true) { ArrayList<Occupant> ocupant1 = new ArrayList<Occupant>(); String[]
+						 * newData = new String[3]; newData = MenuOccupant.addProperty(); Property
+						 * properti = new
+						 * Property(newData[0],newData[1],Integer.parseInt(newData[2]),Float.parseFloat(
+						 * newData[3])); properti5 =
+						 * Model.modifyProperty(properti,cadastralNumberReturned);
+						 * Model.saveChange(properti5); }
+						 */
+						break;
+					case 4: 
+						MenuOccupant.showsOccupants(Model.getListOccupant());
+						
+						break;
+					}
+					
+				}else {
 			    	if(valueMenuMane == 3) {
 			    		state = false;
 			    		System.out.println(" El programa ha finalizado");
