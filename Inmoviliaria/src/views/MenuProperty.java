@@ -16,7 +16,7 @@ public class MenuProperty {
 	}
 	
 	
-	public static int menuManeProperty() {
+	public int menuManeProperty() {
 		int option = 0;
 		
 	    try {
@@ -35,7 +35,7 @@ public class MenuProperty {
 	
 	}
 	
-	public static String[] addProperty() {
+	public String[] addProperty() {
 	    	
 		    System.out.println(" Aï¿½ada el codigo catastral del inmueble: ");
 		    String numberCadastral = keyboard();
@@ -54,7 +54,7 @@ public class MenuProperty {
 			
 	    return dataProperty;
 	}
-	public static String[] newProperty(String[] oldProperty) {
+	public String[] newProperty(String[] oldProperty) {
 
 			System.out.println(" Aï¿½ada la direccion del inmueble: ");
 			String direction = keyboard();
@@ -70,10 +70,10 @@ public class MenuProperty {
 	    return dataProperty;
 	}
 	
-	public static int selectDeleteProperty(ArrayList<Property> prop) {
+	public int selectDeleteProperty(ArrayList<Property> prop) {
 		
 		int idDel= 0;
-		MenuProperty.showsAllProperties(prop);
+		showsAllProperties(prop);
 		try {
 			System.out.println("\n     -------------------------------------------------------    ");
 			System.out.println("\n Ingrese el ID del inmueble que desea eliminar: ");
@@ -85,32 +85,10 @@ public class MenuProperty {
 		}		
 		return idDel;
 	}
-	
-	public static boolean confirmDelete(String numberCadastralReturned) {
-		
-		boolean value = false;
-		int val = 0;
-		try {
-			System.out.println(" Desea eliminar el inmueble con Nï¿½ catastral "+ numberCadastralReturned);
-			System.out.println(" 1- SI "+ "\n 2- NO");
-			val = Integer.parseInt(keyboard());
-			if(val == 1) {
-				value = true;
-			}
-			if(val == 2) {
-				value = false;
-			}
-		} catch (InputMismatchException e) {
-			System.out.println("Error");
-			System.out.println("Usted a colocado una letra");
-			System.out.println("¿Debe colocar un numero!");
-		}		
-		return value;
-		
-	}
 
-	public static int selectmodifyProperty() {
+	public int selectmodifyProperty(ArrayList<Property> prop) {
 		
+		showsAllProperties(prop);
 		int idMody = 0;
 		System.out.println("\n     -------------------------------------------------------    ");
 		System.out.println("\n Ingrese el ID del inmueble que desa modificar: ");

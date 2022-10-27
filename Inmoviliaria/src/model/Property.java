@@ -14,6 +14,7 @@ public class Property implements Serializable{
 	public String direction;
 	public int postcard;
 	public float price;
+	public String estate;
 	
 	public Property(int id,String cadastralNumber, String direction, int postcard, float price) {
 		this.id = id;
@@ -116,7 +117,7 @@ public class Property implements Serializable{
 			pst.setInt(4,postcard);
 			pst.setFloat(5,price);
 	        pst.executeUpdate();
-		
+	        System.out.println(" Inmueble añadido exitosamente");
 			} catch (SQLException e) {
 				e.printStackTrace();
 				System.out.println("Error en la coneccion a la base de datos ");
@@ -175,7 +176,7 @@ public class Property implements Serializable{
 			pst.setFloat(5,price);
 			pst.setInt(6, id);
 	        pst.executeUpdate();
-		
+	        System.out.println(" Inmueble modificado");
 			} catch (SQLException e) {
 				e.printStackTrace();
 				System.out.println("Error en la coneccion a la base de datos ");
@@ -189,7 +190,7 @@ public class Property implements Serializable{
 			PreparedStatement st = conn.prepareStatement(" DELETE FROM property WHERE id_Property=?");
 			st.setInt(1, id);
 			st.executeUpdate();
-			
+			System.out.println(" Se elimino el inmueble del sistema");
 		} catch (SQLException e) {
 			
 			e.printStackTrace();
