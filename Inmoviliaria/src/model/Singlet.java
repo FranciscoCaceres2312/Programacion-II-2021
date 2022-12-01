@@ -11,7 +11,7 @@ public class Singlet {
 	public static Connection getInstance() throws SQLException{
 		if(conection == null) {
 	
-			conection = DriverManager.getConnection("jdbc:mysql://localhost:3306/inmobilaria","fran","");
+			conection = DriverManager.getConnection("jdbc:mysql://localhost:3306/inmobiliaria","fran","");
 			
 		
 		}

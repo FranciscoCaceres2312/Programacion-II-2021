@@ -46,14 +46,21 @@ public class MenuOccupant {
 			
 	    return dataOccupant;
 	    }
-	public int selectDeleteOccupant(ArrayList<Occupant> occu) {
+	public String selectDeleteOccupant(ArrayList<Occupant> occu) {
 		
-		int idDel= 0;
+		String idDel = "";
 		showsAllOccupants(occu);
 		try {
 			System.out.println("\n     -------------------------------------------------------    ");
-			System.out.println("\n Ingrese el id del Occupante que desea eliminar del sistema: ");
-			idDel = Integer.parseInt(keyboard());
+			System.out.println("\n Ingrese el Occupante que desea eliminar del sistema: ");
+			idDel = keyboard();
+			CICLO1: 
+			for(int i = 0; i < occu.size(); i++) {
+				if(i+1 == Integer.parseInt(idDel)) {
+				    idDel = occu.get(i).getId();
+				    break CICLO1;
+				}
+			}
 		}catch(InputMismatchException e) {
 			System.out.println("Error");
 			System.out.println("Usted a colocado una letra");
@@ -62,18 +69,27 @@ public class MenuOccupant {
 		return idDel;
 	}
 	public static void showsAllOccupants(ArrayList<Occupant> occ) {
-    occ.forEach(System.out::println);
+    for(int i = 0; i < occ.size(); i++) {
+    	System.out.println(i+1);
+    	System.out.println(occ.get(i).toString());
+    }
 		
 	}
-	public int selectmodifyOccupant(ArrayList<Occupant> occu) {
+	public String selectmodifyOccupant(ArrayList<Occupant> occu) {
 		
 		showsAllOccupants(occu);
-		int idMody = 0;
+		String idMody;
 		System.out.println("\n     -------------------------------------------------------    ");
 		System.out.println("\n Ingrese el ID del inquilino que desea modificar: ");
-        idMody = Integer.parseInt(keyboard()); 
+        idMody = keyboard(); 
+        CICLO2: 
+			for(int i = 0; i < occu.size(); i++) {
+				if(i+1 == Integer.parseInt(idMody)) {
+				    idMody = occu.get(i).getId();
+				    break CICLO2;
+				}
+			}
 		return idMody;
-		
 	}
 	public String[] newOccupant(String[] oldOccupant) {
 

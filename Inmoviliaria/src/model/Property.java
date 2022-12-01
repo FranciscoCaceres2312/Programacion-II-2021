@@ -1,22 +1,16 @@
 package model;
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 
-
-public class Property implements Serializable{
-	public int id;
+public class Property implements Serializable, Comparable<Property>{
+	
+	public String id;
 	public String cadastralNumber;
 	public String direction;
 	public int postcard;
 	public float price;
 	public String estate;
 	
-	public Property(int id,String cadastralNumber, String direction, int postcard, float price) {
+	public Property(String id,String cadastralNumber, String direction, int postcard, float price) {
 		this.id = id;
 		this.cadastralNumber = cadastralNumber;
 		this.direction = direction;
@@ -24,27 +18,16 @@ public class Property implements Serializable{
 		this.price = price;
 	}
 	
-    public static int idIncrement() {
-		
-		int result = 0;
-		try {
-			Connection conn = Singlet.getInstance();
-			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT MAX(id_Occupant) from occupant");
-			while(rs.next()) {
-				result = rs.getInt(1) + 1;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	public static String idProperty() {
+		String result = java.util.UUID.randomUUID().toString().toUpperCase().substring(0, 5);
 		return result;
 	}
     
-	public int getId() {
+	public String getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getCadastralNumber() {
@@ -79,6 +62,16 @@ public class Property implements Serializable{
 		this.price = price;
 	}
 
+	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cadastralNumber == null) ? 0 : cadastralNumber.hashCode());
+		return result;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -98,103 +91,16 @@ public class Property implements Serializable{
 
 	@Override
 	public String toString() {
-		return "\n ID: "+id+""
-				+ "\n Numero Catastral: "+ cadastralNumber+""
+		return "\n Numero Catastral: "+ cadastralNumber+""
 				+ "\n Dirección: "+direction+""
 				+ "\n Codigo Postal: "+postcard+""
 				+ "\n Valor: "+price;
 	}
 
-    public void addProperty() {
+	@Override
+	public int compareTo(Property o) {
 		
-		try {
-			Connection con = Singlet.getInstance();
-	
-			PreparedStatement pst = con.prepareStatement("INSERT INTO property VALUES(?,?,?,?,?)");
-			pst.setInt(1,10);
-			pst.setString(2,cadastralNumber);
-			pst.setString(3,direction);
-			pst.setInt(4,postcard);
-			pst.setFloat(5,price);
-	        pst.executeUpdate();
-	        System.out.println(" Inmueble añadido exitosamente");
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println("Error en la coneccion a la base de datos ");
-		}
-		
+		return cadastralNumber.compareTo(o.getCadastralNumber());
 	}
-    
-    public static ArrayList<Property> getAllProperties() {
-    	ArrayList<Property> result = new ArrayList<Property>();
-    	try {
-			Connection conn = Singlet.getInstance();
-			PreparedStatement pst = conn.prepareStatement("SELECT * FROM property");
-            ResultSet rs = pst.executeQuery();
-            
-			while(rs.next()) {
-				
-				Property prop = new Property(rs.getInt("id_Property"), rs.getString("cadastralNumber"),rs.getString("direction"),rs.getInt("postcard"),rs.getFloat("price"));
-                result.add(prop);            
-			}
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-    	return result; 
-    }
-    public static String[] filterProperty(int id) {
-    	String filter[] = new String[5];
-    	try {
-			Connection conn = Singlet.getInstance();
-			PreparedStatement pst = conn.prepareStatement("SELECT * FROM property WHERE id_Property=?");
-            pst.setInt(1, id);
-			ResultSet rs = pst.executeQuery();
-			while(rs.next()) {
-				filter[0] = Integer.toString(rs.getInt(1));
-				filter[1] = rs.getString("cadastralNumber");
-				filter[2] = rs.getString("direction");
-				filter[3] = Integer.toString(rs.getInt("postcard"));
-				filter[4] = Float.toString(rs.getFloat("price"));
-            }
-    	}catch(SQLException e) {
-			e.printStackTrace();
-		}
-    	return filter;
-    }
-    
-    public void modifyProperty() {
-    	
-    	try {
-			Connection con = Singlet.getInstance();
-	
-			PreparedStatement pst = con.prepareStatement("UPDATE property SET id_Property=?,cadastralNumber=?,direction=?,postcard=?,price=? WHERE id_Property=?");
-			pst.setInt(1,id);
-			pst.setString(2,cadastralNumber);
-			pst.setString(3, direction);
-			pst.setInt(4, postcard);
-			pst.setFloat(5,price);
-			pst.setInt(6, id);
-	        pst.executeUpdate();
-	        System.out.println(" Inmueble modificado");
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println("Error en la coneccion a la base de datos ");
-			}
-    }
-    
-	public static void deleteProperty(int id) {
-		
-		try {
-			Connection conn = Singlet.getInstance();
-			PreparedStatement st = conn.prepareStatement(" DELETE FROM property WHERE id_Property=?");
-			st.setInt(1, id);
-			st.executeUpdate();
-			System.out.println(" Se elimino el inmueble del sistema");
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-		
-	}
+   
 }

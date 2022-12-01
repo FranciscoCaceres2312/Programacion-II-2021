@@ -21,6 +21,7 @@ public class Controller {
 		MenuOccupant menuOccupant = new MenuOccupant();
 		MenuContract menuContract = new MenuContract();
 		MenuReceipt menuReceipt = new MenuReceipt();
+		Model model = new Model();
 		String[] dataProperty = new String[5];
 		String[] dataOccupant = new String[4];
 		do {
@@ -37,27 +38,32 @@ public class Controller {
 
 					String[] data = new String[4];
 					data = menuProperty.addProperty();
-					Property property = new Property(Property.idIncrement(), data[0], data[1],
+					Property property = new Property(Property.idProperty(), data[0], data[1],
 							Integer.parseInt(data[2]), Float.parseFloat(data[3]));
-					property.addProperty();
+					menuProperty.showMessages(model.addProperty(property)); 
 					break;
 				case 2:
 
-					int idDel = menuProperty.selectDeleteProperty(Property.getAllProperties());
-					Property.deleteProperty(idDel);
+					String idDel = menuProperty.selectDeleteProperty(model.getAllProperties());
+					model.deleteProperty(idDel);
 					break;
 				case 3:
-
-					int idMody = menuProperty.selectmodifyProperty(Property.getAllProperties());
-					dataProperty = Property.filterProperty(idMody);
-					dataProperty = menuProperty.newProperty(dataProperty);
-					Property propertyMody = new Property(Integer.parseInt(dataProperty[0]), dataProperty[1], dataProperty[2],
-							Integer.parseInt(dataProperty[3]), Float.parseFloat(dataProperty[4]));
-					propertyMody.modifyProperty();
+					do {
+						String number = menuProperty.selectmodifyProperty(model.getAllProperties());
+						dataProperty = model.filterProperti(number);
+						if(dataProperty[0] != null) {
+							dataProperty = menuProperty.newProperty(dataProperty);
+							Property propertyMody = new Property(dataProperty[0],dataProperty[1], dataProperty[2],
+									Integer.parseInt(dataProperty[3]), Float.parseFloat(dataProperty[4]));
+							model.modifyProperty(propertyMody);
+						}else {
+							menuProperty.showMessages(dataProperty[1]);
+						}
+					}while(dataProperty[0] == null);
 					break;
 				case 4:
 
-					MenuProperty.showsAllProperties(Property.getAllProperties());
+					MenuProperty.showsAllProperties(model.getAllProperties());
 
 				}
 
@@ -69,49 +75,59 @@ public class Controller {
 				case 1:
 					String[] data1 = new String[3];
 					data1 = menuOccupant.addOccupant();
-					Occupant ocupant = new Occupant(Occupant.idIncrement(), Integer.parseInt(data1[0]), data1[1],
+					Occupant ocupant = new Occupant(Occupant.idOccupant(), Integer.parseInt(data1[0]), data1[1],
 							Integer.parseInt(data1[2]));
-					ocupant.addOccupant();
+					model.addOccupant(ocupant);
 					break;
 				case 2:
-					int idDel = menuOccupant.selectDeleteOccupant(Occupant.getAllOccupant());
-					Occupant.deleteOccupant(idDel);
+					String idDel = menuOccupant.selectDeleteOccupant(model.getAllOccupant());
+					model.deleteOccupant(idDel);
 					break;
 				case 3:
-					int idMody = menuOccupant.selectmodifyOccupant(Occupant.getAllOccupant());
-					dataOccupant = Occupant.filterOccupant(idMody);
+					String idMody = menuOccupant.selectmodifyOccupant(model.getAllOccupant());
+					dataOccupant = model.filterOccupant(idMody);
 					dataOccupant = menuOccupant.newOccupant(dataOccupant);
-					Occupant occupantMody = new Occupant(Integer.parseInt(dataOccupant[0]), Integer.parseInt(dataOccupant[1]),
+					Occupant occupantMody = new Occupant(dataOccupant[0], Integer.parseInt(dataOccupant[1]),
 							dataOccupant[2], Integer.parseInt(dataOccupant[3]));
-					occupantMody.modifyOccupant();
+					model.modifyOccupant(occupantMody);
 					break;
 				case 4:
-					MenuOccupant.showsAllOccupants(Occupant.getAllOccupant());
+					MenuOccupant.showsAllOccupants(model.getAllOccupant());
 					break;
 				}
 			}
 			if (valueMenuMane == 3) {
-				int[] dataContract = new int[6];
-				dataContract = menuContract.AddContract(Occupant.getAllOccupant(), Property.getAllProperties());
-				Contract contract = new Contract(Contract.id_Contract(), dataContract[0], dataContract[1],
-						dataContract[2], dataContract[3], dataContract[4], dataContract[5]);
-				contract.addContract();
+				String[] dataContract = new String[6];
+				dataContract = menuContract.AddContract(model.getAllOccupant(), model.getAllProperties());
+				Contract contract = new Contract(Contract.idContract(),Integer.parseInt(dataContract[0]), Integer.parseInt(dataContract[1]),
+						Integer.parseInt(dataContract[2]), Integer.parseInt(dataContract[3]), dataContract[4], dataContract[5]);
+				model.addContract(contract);
 			}
 			if(valueMenuMane == 4) {
-				menuContract.showsAllContract(Contract.getAllContracts());
+				menuContract.showsAllContract(model.getAllContracts());
+				
 			}
 			if(valueMenuMane == 5) {
-				int[] data2 = new int[2];
-				data2 = menuReceipt.selectProperty(Property.getAllProperties());
-				dataProperty = Property.filterProperty(data2[0]);
-				Receipt receipt = new Receipt(Receipt.id_Receipt(),data2[0],data2[1],Float.parseFloat(dataProperty[4]));
-			    receipt.addReceipt();
+				String[] data2 = new String[2];
+				data2 = menuReceipt.selectProperty(model.getAllProperties());
+				dataProperty = model.filterProperty(data2[0]);
+				Receipt receipt = new Receipt(Receipt.id_Receipt(),data2[0],Integer.parseInt(data2[1]),Float.parseFloat(dataProperty[4]));
+			    model.addReceipt(receipt);
 			}
 
 			if (valueMenuMane == 6) {
-				MenuReceipt.showsAllReceipt(Receipt.getAllReceipt());
+				MenuReceipt.showsAllReceipt(model.getAllReceipt());
 			}
 			if (valueMenuMane == 7) {
+				menuProperty.showMessages( model.synchronizeProperties());
+			}
+			if (valueMenuMane == 8) {
+				model.synchronizeOccupants();
+			}
+			if (valueMenuMane == 9) {
+				model.synchronizeContracts();
+			}
+			if (valueMenuMane == 10) {
 				state = false;
 				vista.endProgram();
 			}

@@ -1,30 +1,25 @@
 package model;
 
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
-public class Receipt {
+public class Receipt implements Serializable{
 	
 	private String receiptCode;
-	private int id_Property;
+	private String id_Property;
 	private String date;
 	private int iva;
 	private float price;
 	public SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
-	public Receipt(String receiptCode, int property,int iva, float price) {
+	public Receipt(String receiptCode, String property,int iva, float price) {
 		this.receiptCode = receiptCode;
 		this.id_Property = property;
 		this.date = dateString();
 		this.iva = iva;
 		this.price = price;
 	}
-	public Receipt(String receiptCode, int property, String date, int iva, float price) {
+	public Receipt(String receiptCode, String property, String date, int iva, float price) {
 		this.receiptCode = receiptCode;
 		this.id_Property = property;
 		this.date = date;
@@ -47,13 +42,19 @@ public class Receipt {
 	public void setReceiptCode(String receiptCode) {
 		this.receiptCode = receiptCode;
 	}
+	public String getIdProperty() {
+		return id_Property;
+	}
+	public void setIdProperty(String id_Property){
+		this.id_Property = id_Property;
+	}
 	public String getDate() {
 		return date;
 	}
 	public void setDate(String date) {
 		this.date = date;
 	}
-	public float getIva() {
+	public int getIva() {
 		return iva;
 	}
 	public void setIva(int iva) {
@@ -90,43 +91,4 @@ public class Receipt {
 		return "Receipt [receiptCode=" + receiptCode + ", property=" + id_Property + ", date=" + date + ", iva=" + iva
 				+"%"+ ", price=" + price + "]";
 	}
-	
-	public void addReceipt() {
-		try {
-			Connection conn = Singlet.getInstance();
-			
-			PreparedStatement pst = conn.prepareStatement("INSERT INTO receipt Values(?,?,?,?,?)");
-		    pst.setString(1, receiptCode);
-		    pst.setInt(2, id_Property);
-		    pst.setString(3, date);
-		    pst.setInt(4, iva);
-		    pst.setFloat(5, price);
-		    pst.executeUpdate();
-		    System.out.println(" Recibo generado exitosamente");
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.out.print(" Fallo al guardar los datos del recibo ");
-		}
-	}
-	public static ArrayList<Receipt> getAllReceipt(){
-		ArrayList<Receipt> receipts = new ArrayList<Receipt>();
-		Connection conn;
-		try {
-			conn = Singlet.getInstance();
-			PreparedStatement pst = conn.prepareStatement("SELECT * FROM receipt ORDER BY date desc");
-	        ResultSet rs = pst.executeQuery();
-            while(rs.next()) {
-				
-				Receipt receip = new Receipt(rs.getString("receiptCode"), rs.getInt("id_Property"),rs.getString("date"),rs.getInt("iva"),rs.getFloat("price"));
-                receipts.add(receip);            
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		return receipts;
-	}
-
 }

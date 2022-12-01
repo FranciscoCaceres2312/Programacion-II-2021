@@ -1,31 +1,30 @@
 package model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class Occupant {
+public class Occupant implements Serializable, Comparable<Occupant>{
 	
-	private int idOccupant;
+	private String idOccupant;
 	private int dni;
 	private String name;
 	private int age;
 	
-	public Occupant(int id,int dni,String name,int age){
+	public Occupant(String id,int dni,String name,int age){
 		this.idOccupant = id;
 		this.dni = dni;
 		this.name = name;
 		this.age = age;
 	}
+	public static String idOccupant() {
+		String result = java.util.UUID.randomUUID().toString().toUpperCase().substring(0, 5);
+		return result;
+	}
 
-	public int getId() {
+	public String getId() {
 		return idOccupant;
 	}
 	
-	public void setId(int id) {
+	public void setId(String id) {
 		this.idOccupant = id;
 	}
 	public int getDNI() {
@@ -51,7 +50,14 @@ public class Occupant {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + dni;
+		return result;
+	}
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -65,121 +71,16 @@ public class Occupant {
 			return false;
 		return true;
 	}
-
 	@Override
 	public String toString() {
-		return "\n ID: "+idOccupant+""
-	            +"\n DNI: "+ dni+""
+		return "\n DNI: "+ dni+""
 				+ "\n Nombre: "+name+""
 				+ "\n Edad: "+age+"";
-
+	}
+	@Override
+	public int compareTo(Occupant o) {
+		
+		return idOccupant.compareTo(o.getId());
 	}
 	
-	public void addOccupant() {
-			
-		try {
-			Connection con = Singlet.getInstance();
-		
-			PreparedStatement pst = con.prepareStatement("INSERT INTO occupant VALUES(?,?,?,?)");
-			pst.setInt(1,idOccupant);				
-			pst.setInt(2,dni);
-			pst.setString(3,name);
-			pst.setInt(4,age);		
-			pst.executeUpdate();
-			System.out.println(" Inquilino añadido exitosamente");
-			
-			} catch (SQLException e) {
-				e.printStackTrace();
-				System.out.println(e + " Fallo al guardar los datos");
-		}		
-	}
-	
-	public static int idIncrement() {
-		
-		int id = 0;
-		try {
-			Connection conn = Singlet.getInstance();
-			Statement statement = conn.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT MAX(id_Occupant) from occupant");
-			while(rs.next()) {
-				id = rs.getInt(1)+1;
-				
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return id;
-	}
-	
-	public static ArrayList<Occupant> getAllOccupant() {
-    	ArrayList<Occupant> result = new ArrayList<Occupant>();
-    	try {
-			Connection conn = Singlet.getInstance();
-			PreparedStatement pst = conn.prepareStatement("SELECT * FROM occupant");
-            ResultSet rs = pst.executeQuery();
-            
-			while(rs.next()) {
-				
-				Occupant occu = new Occupant(rs.getInt(1), rs.getInt("dni"),rs.getString("name"),rs.getInt("age"));
-				result.add(occu);  
-			}
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-    	return result; 
-    }
-	
-	public static void deleteOccupant(int id) {
-		
-		try {
-			Connection conn = Singlet.getInstance();
-			PreparedStatement st = conn.prepareStatement(" DELETE FROM occupant WHERE id_Occupant=?");
-			st.setInt(1, id);
-			st.executeUpdate();
-			System.out.println(" Se elimino el inquilino del sistema");
-			
-		} catch (SQLException e) {
-			
-			e.printStackTrace();
-		}
-		
-	}
-	 public static String[] filterOccupant(int id) {
-	    	String filter[] = new String[4];
-	    	try {
-				Connection conn = Singlet.getInstance();
-				PreparedStatement pst = conn.prepareStatement("SELECT * FROM occupant WHERE id_occupant=?");
-	            pst.setInt(1, id);
-				ResultSet rs = pst.executeQuery();
-				while(rs.next()) {
-					filter[0] = Integer.toString(rs.getInt(1));
-					filter[1] = Integer.toString(rs.getInt("dni"));
-					filter[2] = rs.getString("name");
-					filter[3] = Integer.toString(rs.getInt("age"));
-	            }
-	    	}catch(SQLException e) {
-				e.printStackTrace();
-			}
-	    	return filter;
-	    }
-	 public void modifyOccupant() {
-	    	
-	    	try {
-				Connection con = Singlet.getInstance();
-		
-				PreparedStatement pst = con.prepareStatement("UPDATE occupant SET id_Occupant=?,dni=?,name=?,age=? WHERE id_Occupant=?");
-				pst.setInt(1,idOccupant);
-				pst.setInt(2,dni);
-				pst.setString(3, name);
-				pst.setInt(4, age);
-				pst.setInt(5, idOccupant);
-		        pst.executeUpdate();
-		        System.out.println(" Inquilino modificado");
-				} catch (SQLException e) {
-					e.printStackTrace();
-					System.out.println("Error en la coneccion a la base de datos ");
-				}
-	    }
-
 }

@@ -14,13 +14,15 @@ public class MenuProperty {
 		String var = scaner.nextLine();
 		return var;
 	}
-	
+	public void showMessages(String message) {
+		System.out.println(message);
+	}
 	
 	public int menuManeProperty() {
 		int option = 0;
 		
 	    try {
-		System.out.println(" 1- Aï¿½adir Inmueble");
+		System.out.println(" 1- Añadir Inmueble");
 		System.out.println(" 2- Eliminar Inmueble");
 		System.out.println(" 3- Modificar Inmueble");
 		System.out.println(" 4- Mostrar Inmuebles");
@@ -29,7 +31,7 @@ public class MenuProperty {
 		} catch (InputMismatchException e) {
 			System.out.println("Error");
 			System.out.println("Usted a colocado una letra");
-			System.out.println("ï¿½Debe colocar un numero!");
+			System.out.println("!Debe colocar un numero!");
 		}		
 		return option;
 	
@@ -37,13 +39,13 @@ public class MenuProperty {
 	
 	public String[] addProperty() {
 	    	
-		    System.out.println(" Aï¿½ada el codigo catastral del inmueble: ");
+		    System.out.println(" Añada el codigo catastral del inmueble: ");
 		    String numberCadastral = keyboard();
-			System.out.println(" Aï¿½ada la direccion del inmueble: ");
+			System.out.println(" Añada la direccion del inmueble: ");
 			String direction = keyboard();
-			System.out.println(" Aï¿½ada el cï¿½digo postal: ");
+			System.out.println(" Añada el codigo postal: ");
 			String postcard = keyboard();
-			System.out.println(" Aï¿½ada precio del inmueble: ");
+			System.out.println(" Añada precio del inmueble: ");
 			String price = keyboard();
 			String[] dataProperty = new String[4];
 		
@@ -56,9 +58,9 @@ public class MenuProperty {
 	}
 	public String[] newProperty(String[] oldProperty) {
 
-			System.out.println(" Aï¿½ada la direccion del inmueble: ");
+			System.out.println(" Añada la direccion del inmueble: ");
 			String direction = keyboard();
-			System.out.println(" Aï¿½ada precio del inmueble: ");
+			System.out.println(" Añada precio del inmueble: ");
 			String price = keyboard();
 			String[] dataProperty = new String[5];
 		    dataProperty[0] = oldProperty[0];
@@ -69,37 +71,45 @@ public class MenuProperty {
 			
 	    return dataProperty;
 	}
-	
-	public int selectDeleteProperty(ArrayList<Property> prop) {
-		
-		int idDel= 0;
+
+	public String selectDeleteProperty(ArrayList<Property> prop) {
+
 		showsAllProperties(prop);
-		try {
-			System.out.println("\n     -------------------------------------------------------    ");
-			System.out.println("\n Ingrese el ID del inmueble que desea eliminar: ");
-			idDel = Integer.parseInt(keyboard());
-		}catch(InputMismatchException e) {
-			System.out.println("Error");
-			System.out.println("Usted a colocado una letra");
-			System.out.println("¿Debe colocar un numero!");
-		}		
-		return idDel;
+		String number = null;
+		System.out.println("\n Ingrese el inmueble que desea eliminar: ");
+		number = keyboard();
+		CICLO1: 
+			for(int i = 0; i < prop.size(); i++) {
+				if(i+1 == Integer.parseInt(number)) {
+					number = prop.get(i).getId();
+					break CICLO1;
+				}
+			}
+		return number;
 	}
 
-	public int selectmodifyProperty(ArrayList<Property> prop) {
-		
+	public String selectmodifyProperty(ArrayList<Property> prop) {
+
 		showsAllProperties(prop);
-		int idMody = 0;
-		System.out.println("\n     -------------------------------------------------------    ");
-		System.out.println("\n Ingrese el ID del inmueble que desa modificar: ");
-        idMody = Integer.parseInt(keyboard()); 
-		return idMody;
-		
+		String num = null;
+		System.out.println("\n Ingrese el inmueble que desea Modificar: ");
+		num = keyboard();
+		CICLO2: 
+			for(int i = 0; i < prop.size(); i++) {
+				if(i+1 == Integer.parseInt(num)) {
+					num = prop.get(i).getId();
+					break CICLO2;
+				}
+			}
+		return num;
+
 	}
 	
 	public static void showsAllProperties(ArrayList<Property> prop) {
-		prop.forEach(System.out::println);
-		//prop.forEach((proper) -> System.out.println(proper.id+" "+ proper.cadastralNumber+" "+ proper.direction+" "+proper.postcard+" "+proper.price));
+		for(int i  = 0; i < prop.size();i++) {
+			System.out.println(i+1);
+			System.out.println(prop.get(i).toString());
+		}
 	}
 	
 }

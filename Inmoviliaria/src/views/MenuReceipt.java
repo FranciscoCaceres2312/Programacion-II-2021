@@ -12,13 +12,13 @@ public class MenuReceipt {
 		String var = scaner.nextLine();
 		return var;
 	}
-	public int[] selectProperty(ArrayList<Property> prop) {
-		int[] result = new int[2];
+	public String[] selectProperty(ArrayList<Property> prop) {
+		String[] result = new String[2];
 		MenuProperty.showsAllProperties(prop);
 		System.out.println(" Ingrese el id del Inmueble del que desea generar recibo");
-		result[0] = Integer.parseInt(keyboard());
+		result[0] = keyboard();
 		System.out.println(" Ingrese el valor del IVA:");
-		result[1] = Integer.parseInt(keyboard());
+		result[1] = keyboard();
 		return result;
 	}
 	
