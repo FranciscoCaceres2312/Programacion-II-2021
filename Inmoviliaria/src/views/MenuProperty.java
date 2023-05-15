@@ -26,6 +26,7 @@ public class MenuProperty {
 		System.out.println(" 2- Eliminar Inmueble");
 		System.out.println(" 3- Modificar Inmueble");
 		System.out.println(" 4- Mostrar Inmuebles");
+		System.out.println(" 5- Volver");
 		option = Integer.parseInt(keyboard());
 				
 		} catch (InputMismatchException e) {

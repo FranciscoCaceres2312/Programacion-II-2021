@@ -11,20 +11,25 @@ public class Receipt implements Serializable{
 	private String date;
 	private int iva;
 	private float price;
+
+	private String idContract;
 	public SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
-	public Receipt(String receiptCode, String property,int iva, float price) {
+	
+	public Receipt(String receiptCode, String property,int iva, float price, String idContract) {
 		this.receiptCode = receiptCode;
 		this.id_Property = property;
 		this.date = dateString();
 		this.iva = iva;
 		this.price = price;
+		this.idContract = idContract;
 	}
-	public Receipt(String receiptCode, String property, String date, int iva, float price) {
+	public Receipt(String receiptCode, String property, String date, int iva, float price, String idContract) {
 		this.receiptCode = receiptCode;
 		this.id_Property = property;
 		this.date = date;
 		this.iva = iva;
 		this.price = price;
+		this.idContract = idContract;
 	}
 	public String dateString() {
 		Date date = new Date();
@@ -66,6 +71,13 @@ public class Receipt implements Serializable{
 	public void setPrice(float price) {
 		this.price = price;
 	}
+	public String getIdContract() {
+		return idContract;
+	}
+	public void setIdContract(String idContract) {
+		this.idContract = idContract;
+	}
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -85,10 +97,14 @@ public class Receipt implements Serializable{
 			return false;
 		return true;
 	}
-
 	@Override
 	public String toString() {
-		return "Receipt [receiptCode=" + receiptCode + ", property=" + id_Property + ", date=" + date + ", iva=" + iva
-				+"%"+ ", price=" + price + "]";
+		return "/n Codigo de recibo: " + receiptCode 
+				+"/n id Inmueble: " + id_Property + 
+				"/n fecha: " + date + 
+				"/n IVA: "+ iva +
+				"/n precio: "+ price;
 	}
+
+	
 }

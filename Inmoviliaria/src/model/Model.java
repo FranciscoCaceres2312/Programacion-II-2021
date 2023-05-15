@@ -16,12 +16,13 @@ import java.util.List;
 
 public class Model {
 	// Metodos para la clase Property
+	// Guardar lista de inmuebles en archivo txt
 	public void addListProperty(Property prop) {
 
 		ArrayList<Property> properties = new ArrayList<Property>();
 		properties.addAll(getListProperty());
 		if(properties.contains(prop)) {
-			System.out.println("Ya existe ");
+			
 		}else {
 			properties.add(prop);
 			properties.trimToSize();
@@ -43,7 +44,7 @@ public class Model {
 		}
 
 	}
-
+    // Guardar inmueble en base de datos 
 	public String addProperty(Property properti) {
 		String message = "";
 		try {
@@ -64,7 +65,7 @@ public class Model {
 		}
 		return message + "\n Inmueble añadido exitosamente";
 	}
-
+    // Filtra un inmueble en el archivo txt
 	public String[] filterProperty(String id) {
 
 		String[] proper = new String[5];
@@ -81,7 +82,7 @@ public class Model {
 		}
 		return proper;
 	}
-
+    // Filtra un inmueble en la base de datos 
 	public String[] filterProperti(String id) {
 		String filter[] = new String[5];
 		try {
@@ -105,7 +106,7 @@ public class Model {
 		}
 		return filter;
 	}
-
+    // Busca todos los inmuebles del archivo txt
 	public ArrayList<Property> getListProperty() {
 
 		ArrayList<Property> properties1 = new ArrayList<Property>();
@@ -126,7 +127,7 @@ public class Model {
 		}
 		return properties1;
 	}
-
+    // Busca todos los inmuebles de la base de datos
 	public ArrayList<Property> getAllProperties() {
 		ArrayList<Property> result = new ArrayList<Property>();
 		try {
@@ -148,7 +149,7 @@ public class Model {
 		Collections.sort(result);
 		return result;
 	}
-
+    // Quita un inmueble del archivo txt
 	public void deleteProperti(String number) {
 		ArrayList<Property> properti2 = new ArrayList<Property>();
 		for (int i = 0; i < getListProperty().size(); i++) {
@@ -156,13 +157,13 @@ public class Model {
 				properti2.addAll((ArrayList<Property>) getListProperty());
 				properti2.remove(i);
 				System.out.println(" Se elimino el inmueble del sistema ");
-				// properti2.forEach(System.out::println);
+				properti2.forEach(System.out::println);
 
 			}
 		}
 		Model.saveChange(properti2);
 	}
-
+    // Quita un inmueble de la base de datos 
 	public void deleteProperty(String number) {
 
 		try {
@@ -179,7 +180,7 @@ public class Model {
 		}
 
 	}
-
+    // Modifica la direccion y precio de un inmueble en el archivo txt
 	public void modifyProperty(Property prop, String id) {
 		ArrayList<Property> properti4 = new ArrayList<Property>();
 		for (int i = 0; i < getListProperty().size(); i++) {
@@ -193,7 +194,7 @@ public class Model {
 		}
 		Model.saveChange(properti4);
 	}
-
+    // Actualiza el archivo txt con los cambios de la modificacion del inmueble
 	public static void saveChange(ArrayList<Property> change) {
 
 		try (FileOutputStream file = new FileOutputStream("Properties.txt");
@@ -214,7 +215,7 @@ public class Model {
 		System.out.println(" ¡La modificacion se realizo correctamente! ");
 
 	}
-
+	// Modifica la direccion y precio de un inmueble en la base de datos 
 	public void modifyProperty(Property properti) {
 
 		try {
@@ -238,8 +239,8 @@ public class Model {
 	}
 
 	public String synchronizeProperties() {
-		String[] properti = new String[5];
-		String[] proper = new String[5];
+		String[] properti = new String[6];
+		//String[] proper = new String[5];
 		String message = null;
 		if (getAllProperties().equals(getListProperty())) {
 			message = " El almacenamiento está sincronizado";
@@ -258,18 +259,15 @@ public class Model {
 				PreparedStatement pst = conn.prepareStatement("SELECT * FROM property WHERE id_Property=?");
 				pst.setString(1, properti[0]);
 				ResultSet rs = pst.executeQuery();
-				while(i < getListProperty().size()) {
 				while (rs.next()) {
-					proper[0] = rs.getString(1);
-					//if (proper[0].equals(null)) {
-						Property prop = new Property(properti[0], properti[1], properti[2], Integer.parseInt(properti[3]),
-								Float.parseFloat(properti[4]));
-						addProperty(prop);
-						//System.out.println(proper[0]);
-					//}else {
-						System.out.println(proper[0]+ getListProperty().size());
-					//}
-				}}
+					properti[5] = rs.getString(1);
+	
+				}
+				if (properti[5] != properti[0]) {
+					Property prop = new Property(properti[0], properti[1], properti[2], Integer.parseInt(properti[3]),
+							Float.parseFloat(properti[4]));
+					addProperty(prop);
+				}
 
 			}
 			message = " El almacenamiento está sincronizado";
@@ -279,7 +277,8 @@ public class Model {
 		return message;
 	}
 
-	//metodos para la clase Occupant
+//metodos para la clase Occupant
+	// 
 	public void addOccupant(Occupant ocupant) {
 		
 		try {
@@ -493,9 +492,9 @@ public class Model {
 	public String synchronizeOccupants() {
 		String[] ocupant = new String[5];
 		String message = null;
-		if (getAllOccupant().equals(getListOccupant())) {
+		/*if (getAllOccupant().equals(getListOccupant())) {
 			message = " El almacenamiento está sincronizado";
-		}
+		}*/
 
 		try {
 			Connection conn;
@@ -511,7 +510,8 @@ public class Model {
 				while (rs.next()) {
 					ocupant[4] = rs.getString(1);
 				}
-				if (ocupant[4] == null) {
+				
+				if (ocupant[4] != ocupant[0]) {
 					Occupant ocu = new Occupant(ocupant[0],Integer.parseInt(ocupant[1]), ocupant[2], Integer.parseInt(ocupant[3]));
 					addOccupant(ocu);
 				}
@@ -690,12 +690,13 @@ public class Model {
 		try {
 			Connection conn = Singlet.getInstance();
 			
-			PreparedStatement pst = conn.prepareStatement("INSERT INTO receipt Values(?,?,?,?,?)");
+			PreparedStatement pst = conn.prepareStatement("INSERT INTO receipt Values(?,?,?,?,?,?)");
 		    pst.setString(1, receipt.getReceiptCode());
 		    pst.setString(2, receipt.getIdProperty());
 		    pst.setString(3, receipt.getDate());
 		    pst.setInt(4, receipt.getIva());
 		    pst.setFloat(5, receipt.getPrice());
+		    pst.setString(6, receipt.getIdContract());
 		    pst.executeUpdate();
 		    System.out.println(" Recibo generado exitosamente");
 		} catch (SQLException e) {
@@ -712,7 +713,7 @@ public class Model {
 	        ResultSet rs = pst.executeQuery();
             while(rs.next()) {
 				
-				Receipt receip = new Receipt(rs.getString("receiptCode"), rs.getString("id_Property"),rs.getString("date"),rs.getInt("iva"),rs.getFloat("price"));
+				Receipt receip = new Receipt(rs.getString("receiptCode"), rs.getString("id_Property"),rs.getString("date"),rs.getInt("iva"),rs.getFloat("price"),rs.getString("idContract"));
                 receipts.add(receip);            
 			}
 		} catch (SQLException e) {

@@ -14,6 +14,9 @@ public class MenuOccupant {
 	    String var = scaner.nextLine(); 
 	    return var; 
 	}
+    public void messages(String message) {
+    	System.out.println(message);
+    }
  
 	public int menuManeOccupant() {
 		int num = 0;
@@ -22,6 +25,7 @@ public class MenuOccupant {
 		System.out.println(" 2- Eliminar Inquilino");
 		System.out.println(" 3- Modificar Inquilino");
 		System.out.println(" 4- Mostrar Inquilinos");
+		System.out.println(" 5- Volver");
 		num = Integer.parseInt(keyboard());
 				
 		} catch (InputMismatchException e) {

@@ -66,7 +66,7 @@ public class MenuContract {
 
 		return result;
 	}
-	public void showsAllContract(ArrayList<Contract> con) {
+	public static void showsAllContract(ArrayList<Contract> con) {
 		con.forEach(System.out::println);
 	}
 	

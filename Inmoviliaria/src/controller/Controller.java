@@ -64,7 +64,9 @@ public class Controller {
 				case 4:
 
 					MenuProperty.showsAllProperties(model.getAllProperties());
-
+				case 5:
+					state = true;
+					break;
 				}
 
 			}
@@ -94,6 +96,9 @@ public class Controller {
 				case 4:
 					MenuOccupant.showsAllOccupants(model.getAllOccupant());
 					break;
+				case 5: 
+					state= true;
+					break;
 				}
 			}
 			if (valueMenuMane == 3) {
@@ -107,27 +112,27 @@ public class Controller {
 				menuContract.showsAllContract(model.getAllContracts());
 				
 			}
-			if(valueMenuMane == 5) {
-				String[] data2 = new String[2];
-				data2 = menuReceipt.selectProperty(model.getAllProperties());
-				dataProperty = model.filterProperty(data2[0]);
-				Receipt receipt = new Receipt(Receipt.id_Receipt(),data2[0],Integer.parseInt(data2[1]),Float.parseFloat(dataProperty[4]));
+			/*if(valueMenuMane == 5) {
+				String[] data2 = new String[3];
+				data2 = menuReceipt.selectProperty(model.getAllProperties(), model.getAllContracts());
+				dataProperty = model.filterProperti(data2[0]);
+				Receipt receipt = new Receipt(Receipt.id_Receipt(),data2[0],Integer.parseInt(data2[1]),Float.parseFloat(dataProperty[4]),data2[3]);
 			    model.addReceipt(receipt);
 			}
 
 			if (valueMenuMane == 6) {
 				MenuReceipt.showsAllReceipt(model.getAllReceipt());
-			}
-			if (valueMenuMane == 7) {
+			}*/
+			if (valueMenuMane == 5) {
 				menuProperty.showMessages( model.synchronizeProperties());
 			}
-			if (valueMenuMane == 8) {
-				model.synchronizeOccupants();
+			if (valueMenuMane == 6) {
+				menuOccupant.messages(model.synchronizeOccupants()); 
 			}
-			if (valueMenuMane == 9) {
+			if (valueMenuMane == 7) {
 				model.synchronizeContracts();
 			}
-			if (valueMenuMane == 10) {
+			if (valueMenuMane == 8) {
 				state = false;
 				vista.endProgram();
 			}
